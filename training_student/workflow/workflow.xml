@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+		<!-- Workflow Model -->
+        <record id="wkf_student" model="workflow">
+            <field name="name">student.workflow</field>
+            <field name="osv">student.student</field>
+            <field name="on_create">True</field>
+        </record>
+
+		<!-- Activities -->
+		<record id="act_draft" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_student"/>
+            <field name="flow_start">True</field>
+            <field name="name">Draft</field>
+        </record>
+        
+        <record id="act_med_interview" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_student"/>
+            <field name="name">Medical Interview</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'med_interview'})</field>
+        </record>
+	
+		<record id="act_acad_interview" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_student"/>
+            <field name="name">Academic Interview</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'acad_interview'})</field>
+        </record>
+
+		<record id="act_first_register" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_student"/>
+            <field name="name">First Year Registered</field>
+            <field name="kind">function</field>
+<!--             <field name="action">write({'state':'first_register'})</field> -->
+           	<field name="action">reg_first_year()</field>
+        </record>
+        
+        <record id="act_second_register" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_student"/>
+            <field name="name">Second Year Registered</field>
+            <field name="kind">function</field>
+<!--             <field name="action">write({'state':'second_register'})</field> -->
+			<field name="action">reg_second_year()</field>
+        </record>
+        
+        <record id="act_third_register" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_student"/>
+            <field name="name">Third Year Registered</field>
+            <field name="kind">function</field>
+<!--             <field name="action">write({'state':'third_register'})</field> -->
+			<field name="action">reg_third_year()</field>
+        </record>
+        
+        <record id="act_fourth_register" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_student"/>
+            <field name="name">Fourth Year Registered</field>
+<!--             <field name="kind">function</field> -->
+            <field name="action">write({'state':'fourth_register'})</field>
+            <field name="action">reg_fourth_year()</field>
+        </record>
+
+		<record id="act_dismiss" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_student"/>
+            <field name="name">Dismissed</field>
+            <field name="kind">function</field>
+   			<field name="flow_stop">True</field>
+            <field name="action">write({'state':'dismiss'})</field>
+        </record>
+
+		<record id="act_alumni" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_student"/>
+            <field name="name">Alumni</field>
+            <field name="kind">function</field>
+			<field name="flow_stop">True</field>
+            <field name="action">write({'state':'alumni'})</field>
+        </record>
+
+		<!--transitions -->
+		<record id="trans_draft_med_interview" model="workflow.transition">
+            <field name="act_from" ref="act_draft"/>
+            <field name="act_to" ref="act_med_interview"/>
+            <field name="signal">draft_med</field>
+        </record>
+
+		<record id="trans_med_interview_acad_interview" model="workflow.transition">
+            <field name="act_from" ref="act_med_interview"/>
+            <field name="act_to" ref="act_acad_interview"/>
+            <field name="signal">med_acad</field>
+        </record>
+        
+        <record id="trans_med_interview_dismiss" model="workflow.transition">
+            <field name="act_from" ref="act_med_interview"/>
+            <field name="act_to" ref="act_dismiss"/>
+            <field name="signal">med_dismiss</field>
+        </record>
+
+		<record id="trans_acad_interview_first_register" model="workflow.transition">
+            <field name="act_from" ref="act_acad_interview"/>
+            <field name="act_to" ref="act_first_register"/>
+            <field name="signal">acad_first</field>
+        </record>
+        
+        <record id="trans_acad_interview_dismiss" model="workflow.transition">
+            <field name="act_from" ref="act_acad_interview"/>
+            <field name="act_to" ref="act_dismiss"/>
+            <field name="signal">acad_dismiss</field>
+        </record>
+
+		<record id="trans_acad_first_register_second_register" model="workflow.transition">
+            <field name="act_from" ref="act_first_register"/>
+            <field name="act_to" ref="act_second_register"/>
+            <field name="signal">first_second</field>
+        </record>
+        
+        <record id="trans_acad_first_register_first_register" model="workflow.transition">
+            <field name="act_from" ref="act_first_register"/>
+            <field name="act_to" ref="act_first_register"/>
+            <field name="signal">first_first</field>
+        </record>
+        
+        <record id="trans_acad_first_register_dismiss" model="workflow.transition">
+            <field name="act_from" ref="act_first_register"/>
+            <field name="act_to" ref="act_dismiss"/>
+            <field name="signal">first_dismiss</field>
+        </record>
+        
+        <record id="trans_acad_second_register_third_register" model="workflow.transition">
+            <field name="act_from" ref="act_second_register"/>
+            <field name="act_to" ref="act_third_register"/>
+            <field name="signal">second_third</field>
+        </record>
+        
+        <record id="trans_acad_second_register_second_register" model="workflow.transition">
+            <field name="act_from" ref="act_second_register"/>
+            <field name="act_to" ref="act_second_register"/>
+            <field name="signal">second_second</field>
+        </record>
+        
+        <record id="trans_acad_second_register_dismiss" model="workflow.transition">
+            <field name="act_from" ref="act_second_register"/>
+            <field name="act_to" ref="act_dismiss"/>
+            <field name="signal">second_dismiss</field>
+        </record>
+        
+        <record id="trans_acad_third_register_fourth_register" model="workflow.transition">
+            <field name="act_from" ref="act_third_register"/>
+            <field name="act_to" ref="act_fourth_register"/>
+            <field name="signal">third_fourth</field>
+        </record>
+        
+        <record id="trans_acad_third_register_third_register" model="workflow.transition">
+            <field name="act_from" ref="act_third_register"/>
+            <field name="act_to" ref="act_third_register"/>
+            <field name="signal">third_third</field>
+        </record>
+        
+        <record id="trans_acad_third_register_dismiss" model="workflow.transition">
+            <field name="act_from" ref="act_third_register"/>
+            <field name="act_to" ref="act_dismiss"/>
+            <field name="signal">third_dismiss</field>
+        </record>
+        
+        <record id="trans_acad_fourth_register_fourth_register" model="workflow.transition">
+            <field name="act_from" ref="act_fourth_register"/>
+            <field name="act_to" ref="act_fourth_register"/>
+            <field name="signal">fourth_fourth</field>
+        </record>
+        
+        <record id="trans_acad_fourth_register_alumni_register" model="workflow.transition">
+            <field name="act_from" ref="act_fourth_register"/>
+            <field name="act_to" ref="act_alumni"/>
+            <field name="signal">fourth_alumni</field>
+        </record>
+        
+        <record id="trans_acad_fourth_register_dismiss" model="workflow.transition">
+            <field name="act_from" ref="act_fourth_register"/>
+            <field name="act_to" ref="act_dismiss"/>
+            <field name="signal">fourth_dismiss</field>
+        </record>
+
+	</data>
+</odoo>

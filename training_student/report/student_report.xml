@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+       
+		<!-- Report Definition, registration -->
+		<report
+			id="student_report"
+            string="Student Profile"
+            model="student.student"
+            report_type="qweb-pdf"
+            name="training_student.student_profile_template"
+		/>
+
+    </data>
+</openerp>
