@@ -3,7 +3,7 @@
 	<data>
 			<!-- Form view of Student -->
 			<record id="view_student_form" model="ir.ui.view">
-				<field name="name">view.student.form</field>
+				<field name="name">view.student.form</field> 3.
 				<field name="model">student.student</field>
 				<field name="arch" type="xml">
 					<form string="Student Information">
